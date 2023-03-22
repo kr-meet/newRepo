@@ -23,10 +23,6 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         _symbol = symbol_;
         _mint(msg.sender, 100);
     }
-    
-    function getSender() public view returns(address) {
-        return msg.sender;
-    }
 
     function name() public view virtual override returns (string memory) {
         return _name;
@@ -88,6 +84,10 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         return true;
     }
 
+    function transfer(address from, address to, uint256 amount) external {
+        _transfer(from, to, amount);
+    }
+
     function _transfer(address from, address to, uint256 amount) internal virtual {
         require(from != address(0), "ERC20: transfer from the zero address");
         require(to != address(0), "ERC20: transfer to the zero address");
@@ -121,6 +121,10 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         emit Transfer(address(0), account, amount);
 
         _afterTokenTransfer(address(0), account, amount);
+    }
+    
+    function mint(address account, uint256 amount) external {
+        _mint(account, amount);
     }
 
     function _burn(address account, uint256 amount) internal virtual {
